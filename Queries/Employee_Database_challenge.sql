@@ -68,3 +68,34 @@ ORDER BY dept_no;
 
 -- show the number of retirees eligible for a retirement plan
 SELECT COUNT(emp_no) FROM current_emp;
+
+-- Mentorship qualification based on hire date
+SELECT DISTINCT ON (e.emp_no) e.emp_no, 
+	e.first_name, 
+	e.last_name, 
+	e.hire_date, 
+	t.title, 
+	t.to_date,
+	de.dept_no
+INTO qualified_mentors
+FROM employees AS e
+JOIN titles AS t
+	ON e.emp_no = t.emp_no
+JOIN dept_emp AS de
+	ON e.emp_no = de.emp_no
+WHERE (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31') AND
+	(t.to_date = '9999-01-01')
+ORDER BY e.emp_no, t.to_date DESC;
+
+-- Find total number of qualified mentors grouped by department
+SELECT COUNT(emp_no), dept_no
+FROM qualified_mentors
+GROUP BY dept_no
+ORDER BY dept_no;
+
+SELECT COUNT(emp_no)
+FROM qualified_mentors;
+
+
+
+
